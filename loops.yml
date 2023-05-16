@@ -4,11 +4,11 @@
   tasks:
     - name: demo task for loop
       ansible.builtin.debug:
-        msg: vehicles - {{ item }}
+        msg: vehicles - {{ item.vehicle }}, prices - {{ item.price }}
       loop:
-        - cars
-        - buses
-        - lorry
-        - bikes
-        - planes
+        -  { vehicle: cars, price: 10 lakh }
+        - { vehicle: buses, price: 90 lakh }
+        - { vehicle: lorry, price: 95 lakh }
+        - { vehicle: bikes, price: 2 lakh }
+        - { vehicle: planes, price: 500 lakh }
 
