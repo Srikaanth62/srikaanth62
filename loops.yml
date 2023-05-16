@@ -1,0 +1,14 @@
+- name: ansible loops
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: demo task for loop
+      ansible.builtin.debug:
+        msg: vehicles - {{ item }}
+      loop:
+        - cars
+        - buses
+        - lorry
+        - bikes
+        - planes
+
