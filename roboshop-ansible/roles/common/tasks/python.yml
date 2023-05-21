@@ -1,0 +1,29 @@
+- name: Install python 3.6
+  ansible.builtin.yum:
+    name:
+      - python36
+      - gcc
+      - python3-devel
+    state: installed
+
+- name: Include task list in play
+  ansible.builtin.import_tasks:
+    file: add_user.yml
+
+- name: Download and Install dependencies
+  ansible.builtin.shell: pip3.6 install -r requirements.txt
+  args:
+   chdir: /app
+
+- name: import schema task in play
+  ansible.builtin.import_tasks:
+    file: setup_schema.yml
+
+- name: import systemd task in play
+  ansible.builtin.import_tasks:
+    file: systemd_start.yml
+
+- name: Import prometheus
+  ansible.builtin.import_role:
+    name: prometheus
+    tasks_from: node_exporter

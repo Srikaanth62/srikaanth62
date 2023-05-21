@@ -1,0 +1,25 @@
+- name: Install java packaging software
+  ansible.builtin.yum:
+    name: maven
+
+- name: import schema task in play
+  ansible.builtin.import_tasks:
+    file: add_user.yml
+
+- name: download dependencies and build the application
+  ansible.builtin.shell: mvn clean package ; mv target/{{component}}-1.0.jar {{component}}.jar
+  args:
+    chdir: /app
+
+- name: import schema task in play
+  ansible.builtin.import_tasks:
+    file: setup_schema.yml
+
+- name: import systemd task in play
+  ansible.builtin.import_tasks:
+    file: systemd_start.yml
+
+- name: Import prometheus
+  ansible.builtin.import_role:
+    name: prometheus
+    tasks_from: node_exporter

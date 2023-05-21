@@ -1,0 +1,30 @@
+
+- name: Setup nodejs repos
+  ansible.builtin.shell: curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+
+- name: Install nodejs
+  ansible.builtin.yum:
+    name: nodejs
+    state: installed
+
+- name: Include task list in play
+  ansible.builtin.import_tasks:
+   file: add_user.yml
+
+- name: Install nodejs dependencies
+  ansible.builtin.shell: npm install
+  args:
+   chdir: /app
+
+- name: import schema task in play
+  ansible.builtin.import_tasks:
+    file: setup_schema.yml
+
+- name: import systemd task in play
+  ansible.builtin.import_tasks:
+    file: systemd_start.yml
+
+- name: Import prometheus
+  ansible.builtin.import_role:
+    name: prometheus
+    tasks_from: node_exporter
