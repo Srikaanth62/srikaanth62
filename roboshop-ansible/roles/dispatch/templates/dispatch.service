@@ -1,0 +1,12 @@
+[Unit]
+Description = Dispatch Service
+[Service]
+User=roboshop
+Environment=AMQP_HOST={{ lookup('aws_ssm', '{{ env }}.{{ component }}.amqp_host', region='us-east-1' ) }}
+Environment=AMQP_USER={{ lookup('aws_ssm', '{{ env }}.{{ component }}.amqp_user', region='us-east-1' ) }}
+Environment=AMQP_PASS={{ lookup('aws_ssm', '{{ env }}.{{ component }}.amqp_pass', region='us-east-1' ) }}
+ExecStart=/app/dispatch
+SyslogIdentifier=dispatch
+
+[Install]
+WantedBy=multi-user.target

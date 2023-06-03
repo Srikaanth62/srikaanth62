@@ -34,6 +34,7 @@ app_servers = {
   dispatch = {
     name          = "dispatch"
     instance_type = "t3.small"
+    password      = "roboshop123"
   }
 }
 

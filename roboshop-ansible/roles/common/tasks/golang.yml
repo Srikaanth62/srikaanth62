@@ -1,0 +1,22 @@
+- name: Install golang
+  ansible.builtin.yum:
+    name: golang
+    state: installed
+
+- name: Include task list in play
+  ansible.builtin.import_tasks:
+    file: add_user.yml
+
+- name: Install and build golang dependencies
+  ansible.builtin.shell: go mod init dispatch ; go get ; go build
+  args:
+    chdir: /app
+
+- name: import systemd task in play
+  ansible.builtin.import_tasks:
+    file: systemd_start.yml
+
+- name: Import prometheus
+  ansible.builtin.import_role:
+    name: prometheus
+    tasks_from: node_exporter
